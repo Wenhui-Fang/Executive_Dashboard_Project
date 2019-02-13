@@ -14,13 +14,16 @@ import datetime as dt
 import pandas as pd
 import operator
 
+#converting float to USD adapted from https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
+def as_currency(amount):
+    if amount >= 0:
+        return '${:,.2f}'.format(amount)
+    else:
+        return '-${:,.2f}'.format(-amount)
+
 #ALL Variables
 top_sellers = []
 total_monthly_sales = 0.0
-individual_monthly_sales = 0.0
-sales_price = 0.0
-index = []
-
 df = pd.read_csv("sales-201904.csv")
 total_monthly_sales = df['sales price'].sum()
 
@@ -29,7 +32,6 @@ products = df["product"].unique()
 
 #converting datatype to list
 unique_product_list = products.tolist()
-print(unique_product_list)
 
 # filering approach adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
 
@@ -43,7 +45,6 @@ top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly sales"), reve
 
 # print(top_sellers)
 
-
 print("-----------------------")
 print("MONTH: March 2018")
 
@@ -51,7 +52,7 @@ print("-----------------------")
 print("CRUNCHING THE DATA...")
 
 print("-----------------------")
-print("TOTAL MONTHLY SALES: " + str(total_monthly_sales))
+print(f"TOTAL MONTHLY SALES: + {as_currency(total_monthly_sales)}")
 
 print("Product               Sum of sales price")
 
@@ -91,10 +92,11 @@ plt.ylabel("Products")
 plt.xlabel("Sales")
 
 
-#displaying label, adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
+#displaying labels using a loop
+#adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
+
 for a,b in zip(sales_list,product_list):
   plt.text(a,b, str(a))
-
 
 plt.tight_layout()
 plt.show()
