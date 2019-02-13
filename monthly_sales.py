@@ -37,9 +37,9 @@ unique_product_list = products.tolist()
 for product_name in unique_product_list:
     matching_rows = df[df["product"] == product_name]
     individual_monthly_sales = matching_rows["sales price"].sum()
-    top_sellers.append({"name": product_name, "monthly_sales": individual_monthly_sales})
+    top_sellers.append({"name": product_name, "monthly sales": individual_monthly_sales})
 
-top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly_sales"), reverse=True)
+top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly sales"), reverse=True)
 
 
 # print(top_sellers)
@@ -73,36 +73,25 @@ print("-----------------------")
 print("TOP SELLING PRODUCTS:")
 
 for p in top_sellers:
-    print(p["name"] + "             " + str(p["monthly_sales"]))
+    print(p["name"] + "             " + str(p["monthly sales"]))
 
 print("-----------------------")
 print("VISUALIZING THE DATA...")
-
-# f= open("sales-201904.csv","r")
-# print(f.read())
 
 # TODO: make a chart
 
 # adapted from code posted to matplotlib Slack channel: https://georgetown-opim-py.slack.com/archives/CFZDKNKA4/p1549494877005200
 
-bar_data = [
-    {"genre": "Thriller", "viewers": 123456},
-    {"genre": "Mystery", "viewers": 234567},
-    {"genre": "Sci-Fi", "viewers": 987654},
-    {"genre": "Fantasy", "viewers": 876543},
-    {"genre": "Documentary", "viewers": 283105},
-    {"genre": "Action", "viewers": 544099},
-    {"genre": "Romantic Comedy", "viewers": 121212}
-]
+bar_data = top_sellers
 
-genres = []
-viewers = []
+product_list = []
+sales_list = []
 
 for s in bar_data:
-  genres.append(s["genre"])
-  viewers.append(s["viewers"])
+  product_list.append(s["name"])
+  sales_list.append(s["monthly sales"])
 
-plt.bar(genres, viewers)
-plt.ylabel("Viewers")
-plt.xlabel("Genre")
+plt.barh(product_list, sales_list)
+plt.ylabel("Products")
+plt.xlabel("Sales")
 plt.show()
