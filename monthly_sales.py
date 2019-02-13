@@ -9,10 +9,9 @@
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.pyplot as plt
-
+import matplotlib.ticker as ticker
 import datetime as dt
 import pandas as pd
-
 import operator
 
 #ALL Variables
@@ -20,7 +19,7 @@ top_sellers = []
 total_monthly_sales = 0.0
 individual_monthly_sales = 0.0
 sales_price = 0.0
-
+index = []
 
 df = pd.read_csv("sales-201904.csv")
 total_monthly_sales = df['sales price'].sum()
@@ -30,7 +29,7 @@ products = df["product"].unique()
 
 #converting datatype to list
 unique_product_list = products.tolist()
-
+print(unique_product_list)
 
 # filering approach adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
 
@@ -56,19 +55,6 @@ print("TOTAL MONTHLY SALES: " + str(total_monthly_sales))
 
 print("Product               Sum of sales price")
 
-    # matching_product = [p for p in products if p["id"] == selected_id]
-    # product = matching_product[0]["name"]
-    # matching_price = matching_product[0]["price"]
-
-
-# matching_product = [p for p in products if p["product"] == "Khaki Pants"]
-
-# print(matching_product["unit price"])
-
-# for index, row in df.iterrows():
-#     if row["product"] =="Khaki Pants":
-#         print(row["sales price"] )
-
 print("-----------------------")
 print("TOP SELLING PRODUCTS:")
 
@@ -87,11 +73,29 @@ bar_data = top_sellers
 product_list = []
 sales_list = []
 
-for s in bar_data:
-  product_list.append(s["name"])
-  sales_list.append(s["monthly sales"])
+for p in bar_data:
+  product_list.append(p["name"])
+  sales_list.append(p["monthly sales"])
 
-plt.barh(product_list, sales_list)
+product_list.reverse()
+sales_list.reverse()
+
+fig, ax = plt.subplots() # enables us to further customize the figure and/or the axes
+usd_formatter = ticker.FormatStrFormatter('$%1.0f')
+ax.xaxis.set_major_formatter(usd_formatter)
+
+plt.title("Top Selling Products")
+plt.barh(product_list,sales_list, align = "center")
+
 plt.ylabel("Products")
 plt.xlabel("Sales")
+
+
+#displaying label, adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
+for a,b in zip(sales_list,product_list):
+  plt.text(a,b, str(a))
+
+
+plt.tight_layout()
 plt.show()
+
