@@ -10,15 +10,12 @@ import operator
 # creates an file dialog object for the user to select a file
 # adapted from https://pythonspot.com/tk-file-dialogs/
 
-# from tkinter import filedialog
-# from tkinter import *
+from tkinter import filedialog
+from tkinter import *
 
-# try:
-#   root = Tk()
-#   root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
-#   print (root.filename)
-# except:
-#   print("Something is wrong")
+root = Tk()
+root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
+print (root.filename)
 
 #converting float to USD adapted from https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
 def as_currency(amount):
@@ -31,7 +28,7 @@ def as_currency(amount):
 top_sellers = []
 total_monthly_sales = 0.0
 individual_monthly_sales = 0.0
-df = pd.read_csv("sales-201904.csv")
+df = pd.read_csv(root.filename)
 
 total_monthly_sales = df['sales price'].sum()
 
