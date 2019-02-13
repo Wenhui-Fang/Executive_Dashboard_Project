@@ -6,6 +6,12 @@
 
 # File path = sales-201710.csv
 
+
+# import os
+# import plotly
+# import plotly.plotly as py
+# import plotly.graph_objs as go
+
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.pyplot as plt
@@ -53,7 +59,7 @@ print("-----------------------")
 print("CRUNCHING THE DATA...")
 
 print("-----------------------")
-print(f"TOTAL MONTHLY SALES: + {as_currency(total_monthly_sales)}")
+print(f"TOTAL MONTHLY SALES:  {as_currency(total_monthly_sales)}")
 
 print("Product               Sum of sales price")
 
@@ -77,21 +83,38 @@ sales_list = []
 
 for p in bar_data:
   product_list.append(p["name"])
-  sales_list.append(as_currency(p["monthly sales"]))
+  sales_list.append(round(p["monthly sales"],2))
 
 product_list.reverse()
 sales_list.reverse()
 
+
+fig, ax = plt.subplots() # enables us to further customize the figure and/or the axes
+usd_formatter = ticker.FormatStrFormatter('$%1.0f')
+ax.xaxis.set_major_formatter(usd_formatter)
+
 #displaying labels using a loop
 #adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
 
-plt.barh(product_list,sales_list, align = "center")
 
 plt.ylabel("Products")
 plt.xlabel("Sales")
 
+plt.title("Top Selling Products")
+ax = plt.axes()        
+ax.xaxis.grid()
+
+#formating X axis ticker 
+#adapted from https://stackoverflow.com/questions/38152356/matplotlib-dollar-sign-with-thousands-comma-tick-labels
+
+fmt = '${x:,.0f}'
+tick = ticker.StrMethodFormatter(fmt)
+ax.xaxis.set_major_formatter(tick) 
+
+plt.barh(product_list,sales_list, align = "center")
+
 for a,b in zip(sales_list,product_list):
-  plt.text(a, b, str(a))
+  plt.text(a, b, str(as_currency(a)))
 
 plt.tight_layout()
 plt.show()
