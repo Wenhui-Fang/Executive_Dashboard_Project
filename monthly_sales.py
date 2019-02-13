@@ -2,21 +2,23 @@
 
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import datetime as dt
 import pandas as pd
 import operator
 
-
 # creates an file dialog object for the user to select a file
 # adapted from https://pythonspot.com/tk-file-dialogs/
-from tkinter import filedialog
-from tkinter import *
- 
-root = Tk()
-root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
-print (root.filename)
+
+# from tkinter import filedialog
+# from tkinter import *
+
+# try:
+#   root = Tk()
+#   root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
+#   print (root.filename)
+# except:
+#   print("Something is wrong")
 
 #converting float to USD adapted from https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
 def as_currency(amount):
@@ -29,7 +31,7 @@ def as_currency(amount):
 top_sellers = []
 total_monthly_sales = 0.0
 individual_monthly_sales = 0.0
-df = pd.read_csv(root.filename)
+df = pd.read_csv("sales-201904.csv")
 
 total_monthly_sales = df['sales price'].sum()
 
@@ -84,13 +86,6 @@ fig, ax = plt.subplots() # enables us to further customize the figure and/or the
 usd_formatter = ticker.FormatStrFormatter('$%1.0f')
 ax.xaxis.set_major_formatter(usd_formatter)
 
-#displaying labels using a loop
-#adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
-
-plt.ylabel("Products")
-plt.xlabel("Sales")
-plt.title("Top Selling Products")
-
 #displaying x axis grid
 ax = plt.axes()        
 ax.xaxis.grid()
@@ -110,5 +105,8 @@ plt.barh(product_list,sales_list, align = "center")
 for a,b in zip(sales_list,product_list):
   plt.text(a, b, str(as_currency(a)))
 
+plt.ylabel("Products")
+plt.xlabel("Sales")
+plt.title("Top Selling Products")
 plt.tight_layout()
 plt.show()
