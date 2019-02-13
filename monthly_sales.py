@@ -60,7 +60,7 @@ print("-----------------------")
 print("TOP SELLING PRODUCTS:")
 
 for p in top_sellers:
-    print(p["name"] + "             " + str(p["monthly sales"]))
+    print(p["name"] + "             " + as_currency(p["monthly sales"]))
 
 print("-----------------------")
 print("VISUALIZING THE DATA...")
@@ -76,7 +76,7 @@ sales_list = []
 
 for p in bar_data:
   product_list.append(p["name"])
-  sales_list.append(p["monthly sales"])
+  sales_list.append(as_currency(p["monthly sales"]))
 
 product_list.reverse()
 sales_list.reverse()
