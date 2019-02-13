@@ -24,6 +24,7 @@ def as_currency(amount):
 #ALL Variables
 top_sellers = []
 total_monthly_sales = 0.0
+individual_monthly_sales = 0.0
 df = pd.read_csv("sales-201904.csv")
 total_monthly_sales = df['sales price'].sum()
 
@@ -81,23 +82,16 @@ for p in bar_data:
 product_list.reverse()
 sales_list.reverse()
 
-fig, ax = plt.subplots() # enables us to further customize the figure and/or the axes
-usd_formatter = ticker.FormatStrFormatter('$%1.0f')
-ax.xaxis.set_major_formatter(usd_formatter)
+#displaying labels using a loop
+#adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
 
-plt.title("Top Selling Products")
 plt.barh(product_list,sales_list, align = "center")
 
 plt.ylabel("Products")
 plt.xlabel("Sales")
 
-
-#displaying labels using a loop
-#adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
-
 for a,b in zip(sales_list,product_list):
-  plt.text(a,b, str(a))
+  plt.text(a, b, str(a))
 
 plt.tight_layout()
 plt.show()
-
