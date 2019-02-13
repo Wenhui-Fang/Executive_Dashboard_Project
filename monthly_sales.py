@@ -6,12 +6,6 @@
 
 # File path = sales-201710.csv
 
-
-# import os
-# import plotly
-# import plotly.plotly as py
-# import plotly.graph_objs as go
-
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.pyplot as plt
@@ -50,8 +44,8 @@ for product_name in unique_product_list:
 top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly sales"), reverse=True)
 
 
-# print(top_sellers)
 
+# print(top_sellers)
 print("-----------------------")
 print("MONTH: March 2018")
 
@@ -67,7 +61,7 @@ print("-----------------------")
 print("TOP SELLING PRODUCTS:")
 
 for p in top_sellers:
-    print(p["name"] + "             " + as_currency(p["monthly sales"]))
+    print(p["name"].ljust(18) + as_currency(p["monthly sales"]).rjust(15))
 
 print("-----------------------")
 print("VISUALIZING THE DATA...")
@@ -88,7 +82,7 @@ for p in bar_data:
 product_list.reverse()
 sales_list.reverse()
 
-
+#Formatting adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
 fig, ax = plt.subplots() # enables us to further customize the figure and/or the axes
 usd_formatter = ticker.FormatStrFormatter('$%1.0f')
 ax.xaxis.set_major_formatter(usd_formatter)
@@ -96,22 +90,25 @@ ax.xaxis.set_major_formatter(usd_formatter)
 #displaying labels using a loop
 #adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
 
-
 plt.ylabel("Products")
 plt.xlabel("Sales")
-
 plt.title("Top Selling Products")
+
+#displaying x axis grid
 ax = plt.axes()        
 ax.xaxis.grid()
 
 #formating X axis ticker 
 #adapted from https://stackoverflow.com/questions/38152356/matplotlib-dollar-sign-with-thousands-comma-tick-labels
-
 fmt = '${x:,.0f}'
 tick = ticker.StrMethodFormatter(fmt)
 ax.xaxis.set_major_formatter(tick) 
 
+#Make the chart
 plt.barh(product_list,sales_list, align = "center")
+
+#displaying labels using a loop
+#adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
 
 for a,b in zip(sales_list,product_list):
   plt.text(a, b, str(as_currency(a)))
