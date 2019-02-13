@@ -1,11 +1,5 @@
 # monthly_sales.py
 
-# TODO: import some modules and/or packages here
-
-# TODO: write some Python code here to produce the desired functionality...
-
-# File path = sales-201710.csv
-
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,6 +7,19 @@ import matplotlib.ticker as ticker
 import datetime as dt
 import pandas as pd
 import operator
+
+# import Tkinter
+# import tkFileDialog
+# import os
+
+# root = Tkinter.Tk()
+# root.withdraw() #use to hide tkinter window
+
+# currdir = os.getcwd()
+# tempdir = tkFileDialog.askdirectory(parent=root, initialdir=currdir, title='Please select a directory')
+# if len(tempdir) > 0:
+#     print ("You chose %s" % tempdir)
+
 
 #converting float to USD adapted from https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
 def as_currency(amount):
@@ -25,7 +32,7 @@ def as_currency(amount):
 top_sellers = []
 total_monthly_sales = 0.0
 individual_monthly_sales = 0.0
-df = pd.read_csv("sales-201904.csv")
+df = pd.read_csv("sales-201803.csv")
 total_monthly_sales = df['sales price'].sum()
 
 #Getting unique product name
@@ -43,20 +50,14 @@ for product_name in unique_product_list:
 
 top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly sales"), reverse=True)
 
-
-
 # print(top_sellers)
 print("-----------------------")
 print("MONTH: March 2018")
-
 print("-----------------------")
 print("CRUNCHING THE DATA...")
-
 print("-----------------------")
 print(f"TOTAL MONTHLY SALES:  {as_currency(total_monthly_sales)}")
-
-print("Product               Sum of sales price")
-
+print("Product".ljust(18) + "Sum of sales price".rjust(15))
 print("-----------------------")
 print("TOP SELLING PRODUCTS:")
 
@@ -65,8 +66,6 @@ for p in top_sellers:
 
 print("-----------------------")
 print("VISUALIZING THE DATA...")
-
-# TODO: make a chart
 
 # adapted from code posted to matplotlib Slack channel: https://georgetown-opim-py.slack.com/archives/CFZDKNKA4/p1549494877005200
 
