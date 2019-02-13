@@ -8,18 +8,15 @@ import datetime as dt
 import pandas as pd
 import operator
 
-# import Tkinter
-# import tkFileDialog
-# import os
 
-# root = Tkinter.Tk()
-# root.withdraw() #use to hide tkinter window
-
-# currdir = os.getcwd()
-# tempdir = tkFileDialog.askdirectory(parent=root, initialdir=currdir, title='Please select a directory')
-# if len(tempdir) > 0:
-#     print ("You chose %s" % tempdir)
-
+# creates an file dialog object for the user to select a file
+# adapted from https://pythonspot.com/tk-file-dialogs/
+from tkinter import filedialog
+from tkinter import *
+ 
+root = Tk()
+root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
+print (root.filename)
 
 #converting float to USD adapted from https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
 def as_currency(amount):
@@ -32,7 +29,8 @@ def as_currency(amount):
 top_sellers = []
 total_monthly_sales = 0.0
 individual_monthly_sales = 0.0
-df = pd.read_csv("sales-201803.csv")
+df = pd.read_csv(root.filename)
+
 total_monthly_sales = df['sales price'].sum()
 
 #Getting unique product name
