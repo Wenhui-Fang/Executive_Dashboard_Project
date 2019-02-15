@@ -16,15 +16,11 @@ def as_currency(amount):
         return '-${:,.2f}'.format(-amount)
 
 # OPTION B: prompt the user to input their selection.
-
 while True:
   datatype_pass = True
   range_pass = True
   program_pass = True
   year_month = input("Please enter the year and month for the data you want to view in a yyyymm format (e.g. 201901)")
-  mydate = dt.datetime.now()
-  
-
 
   #Input validation
   if not year_month.isdigit():
@@ -46,20 +42,21 @@ while True:
         else:
             break
 
+# create a bool variable to prevente further execution if validation fails
 if program_pass == True:
-
-
+  
   top_sellers = []
   df = pd.read_csv(csv_filepath)
   total_monthly_sales = df['sales price'].sum()
+
+  mydate = dt.datetime.now()
   month = int(str(year_month)[5:6])
+  #converting month number to name
   month_name = mydate.strftime("%B")
   year = month = int(str(year_month)[0:4])
 
-  print("the month is............." + str(month))
   #Getting unique product name
   products = df["product"].unique()
-
   #converting datatype to list
   unique_product_list = products.tolist()
 
@@ -72,7 +69,6 @@ if program_pass == True:
 
   top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly sales"), reverse=True)
 
-  # print(top_sellers)
   print("-----------------------")
   print("MONTH: " + month_name + " " + str(year))
   print("-----------------------")
@@ -128,7 +124,7 @@ if program_pass == True:
     plt.text(a, b, str(as_currency(a)))
 
   plt.ylabel("Products")
-  plt.xlabel("Sales")
+  plt.xlabel("Sales (USD)")
   plt.title("Top Selling Products")
   plt.tight_layout()
   plt.show()
