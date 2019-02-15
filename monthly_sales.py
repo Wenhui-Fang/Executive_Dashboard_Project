@@ -6,16 +6,48 @@ import matplotlib.ticker as ticker
 import datetime as dt
 import pandas as pd
 import operator
+import os
+
+# OPTION B: prompt the user to input their selection.
+
+
+
+while True:
+  datatype_pass = True
+  range_pass = True
+  year_month = input("Please enter the year and month for the data you want to see in a format yyyymm (e.g. 201901")
+
+  #Input validation
+  if not year_month.isdigit():
+    print("INPUT DATA TYPE ERROR! Please only enter a specific year and month in a format yyyymm!")
+    datatype_pass = False
+  if datatype_pass == True:
+    if int(year_month) not in range(190001,201903):
+        print("Please ensure the year and month are valid numbers")
+        range_pass = False
+    if range_pass ==True:    
+        csv_filename = "sales-" + str(year_month) +".csv"
+        csv_filepath = os.path.join("data/", csv_filename)
+        break
+    # if not os.path.isfile(csv_filepath):
+		#  	  print("The file does not exist, please make sure to enter a file with correct format, e.g:'sales-201803'")
+    #     break
+
+print(csv_filename)
+print(csv_filepath)
+
+if not os.path.isfile(csv_filepath):
+		print("The file does not exist, please make sure to enter a file with correct format, e.g:'sales-201803'")
 
 # creates an file dialog object for the user to select a file
 # adapted from https://pythonspot.com/tk-file-dialogs/
 
-from tkinter import filedialog
-from tkinter import *
+# from tkinter import filedialog
+# from tkinter import *
 
-root = Tk()
-root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
-print (root.filename)
+# root = Tk()
+# root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
+# print (root.filename)
 
 #converting float to USD adapted from https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
 def as_currency(amount):
@@ -28,7 +60,7 @@ def as_currency(amount):
 top_sellers = []
 total_monthly_sales = 0.0
 individual_monthly_sales = 0.0
-df = pd.read_csv(root.filename)
+df = pd.read_csv(csv_filepath)
 
 total_monthly_sales = df['sales price'].sum()
 
