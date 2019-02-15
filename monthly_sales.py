@@ -22,6 +22,9 @@ while True:
   range_pass = True
   program_pass = True
   year_month = input("Please enter the year and month for the data you want to view in a yyyymm format (e.g. 201901)")
+  mydate = dt.datetime.now()
+  
+
 
   #Input validation
   if not year_month.isdigit():
@@ -45,17 +48,15 @@ while True:
 
 if program_pass == True:
 
-  print(csv_filename)
-  print(csv_filepath)
 
-  #ALL Variables
   top_sellers = []
-  total_monthly_sales = 0.0
-  individual_monthly_sales = 0.0
   df = pd.read_csv(csv_filepath)
-
   total_monthly_sales = df['sales price'].sum()
+  month = int(str(year_month)[5:6])
+  month_name = mydate.strftime("%B")
+  year = month = int(str(year_month)[0:4])
 
+  print("the month is............." + str(month))
   #Getting unique product name
   products = df["product"].unique()
 
@@ -73,7 +74,7 @@ if program_pass == True:
 
   # print(top_sellers)
   print("-----------------------")
-  print("MONTH: March 2018")
+  print("MONTH: " + month_name + " " + str(year))
   print("-----------------------")
   print("CRUNCHING THE DATA...")
   print("-----------------------")
