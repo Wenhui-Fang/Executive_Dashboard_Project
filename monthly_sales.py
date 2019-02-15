@@ -24,11 +24,11 @@ while True:
 
   #Input validation
   if not year_month.isdigit():
-    print("INPUT DATA TYPE ERROR! Please only enter a specific year and month in a yyyymm format!")
+    print("INPUT DATA TYPE ERROR! Please only enter a specific year and month in a yyyymm format! Let's try again.")
     datatype_pass = False
   if datatype_pass == True:
-    if int(year_month) not in range(190001,301903):
-        print("Please ensure the year and month are reasonable values")
+    if int(year_month) not in range(190001,202012):
+        print("Please ensure the year and month are reasonable values. Let's try again.")
         range_pass = False
     if range_pass ==True:    
         csv_filename = "sales-" + str(year_month) +".csv"
@@ -37,7 +37,7 @@ while True:
         #validation adapted from https://github.com/hiepnguyen034/data_dashboard/blob/master/exec_dash.py
         if not os.path.isfile(csv_filepath):
             program_pass = False
-            print("Sorry. The program cannot find a file at that location and will stop running now.")
+            print("Sorry. The program cannot find a file at that location and will stop now.")
             break
         else:
             break
