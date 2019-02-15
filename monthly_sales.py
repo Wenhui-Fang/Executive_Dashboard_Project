@@ -8,45 +8,6 @@ import pandas as pd
 import operator
 import os
 
-# OPTION B: prompt the user to input their selection.
-
-while True:
-  datatype_pass = True
-  range_pass = True
-  year_month = input("Please enter the year and month for the data you want to see in a format yyyymm (e.g. 201901")
-
-  #Input validation
-  if not year_month.isdigit():
-    print("INPUT DATA TYPE ERROR! Please only enter a specific year and month in a format yyyymm!")
-    datatype_pass = False
-  if datatype_pass == True:
-    if int(year_month) not in range(190001,201903):
-        print("Please ensure the year and month are valid numbers")
-        range_pass = False
-    if range_pass ==True:    
-        csv_filename = "sales-" + str(year_month) +".csv"
-        csv_filepath = os.path.join("data/", csv_filename)
-        break
-    # if not os.path.isfile(csv_filepath):
-		#  	  print("The file does not exist, please make sure to enter a file with correct format, e.g:'sales-201803'")
-    #     break
-
-print(csv_filename)
-print(csv_filepath)
-
-if not os.path.isfile(csv_filepath):
-		print("The file does not exist, please make sure to enter a file with correct format, e.g:'sales-201803'")
-
-# creates an file dialog object for the user to select a file
-# adapted from https://pythonspot.com/tk-file-dialogs/
-
-# from tkinter import filedialog
-# from tkinter import *
-
-# root = Tk()
-# root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
-# print (root.filename)
-
 #converting float to USD adapted from https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
 def as_currency(amount):
     if amount >= 0:
@@ -54,86 +15,119 @@ def as_currency(amount):
     else:
         return '-${:,.2f}'.format(-amount)
 
-#ALL Variables
-top_sellers = []
-total_monthly_sales = 0.0
-individual_monthly_sales = 0.0
-df = pd.read_csv(csv_filepath)
+# OPTION B: prompt the user to input their selection.
 
-total_monthly_sales = df['sales price'].sum()
+while True:
+  datatype_pass = True
+  range_pass = True
+  program_pass = True
+  year_month = input("Please enter the year and month for the data you want to view in a yyyymm format (e.g. 201901)")
 
-#Getting unique product name
-products = df["product"].unique()
+  #Input validation
+  if not year_month.isdigit():
+    print("INPUT DATA TYPE ERROR! Please only enter a specific year and month in a yyyymm format!")
+    datatype_pass = False
+  if datatype_pass == True:
+    if int(year_month) not in range(190001,301903):
+        print("Please ensure the year and month are reasonable values")
+        range_pass = False
+    if range_pass ==True:    
+        csv_filename = "sales-" + str(year_month) +".csv"
+        csv_filepath = os.path.join("data/", csv_filename)
 
-#converting datatype to list
-unique_product_list = products.tolist()
+        #validation adapted from https://github.com/hiepnguyen034/data_dashboard/blob/master/exec_dash.py
+        if not os.path.isfile(csv_filepath):
+            program_pass = False
+            print("Sorry. The program cannot find a file at that location and will stop running now.")
+            break
+        else:
+            break
 
-# filering approach adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
+if program_pass == True:
 
-for product_name in unique_product_list:
-    matching_rows = df[df["product"] == product_name]
-    individual_monthly_sales = matching_rows["sales price"].sum()
-    top_sellers.append({"name": product_name, "monthly sales": individual_monthly_sales})
+  print(csv_filename)
+  print(csv_filepath)
 
-top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly sales"), reverse=True)
+  #ALL Variables
+  top_sellers = []
+  total_monthly_sales = 0.0
+  individual_monthly_sales = 0.0
+  df = pd.read_csv(csv_filepath)
 
-# print(top_sellers)
-print("-----------------------")
-print("MONTH: March 2018")
-print("-----------------------")
-print("CRUNCHING THE DATA...")
-print("-----------------------")
-print(f"TOTAL MONTHLY SALES:  {as_currency(total_monthly_sales)}")
-print("Product".ljust(18) + "Sum of sales price".rjust(15))
-print("-----------------------")
-print("TOP SELLING PRODUCTS:")
+  total_monthly_sales = df['sales price'].sum()
 
-for p in top_sellers:
-    print(p["name"].ljust(18) + as_currency(p["monthly sales"]).rjust(15))
+  #Getting unique product name
+  products = df["product"].unique()
 
-print("-----------------------")
-print("VISUALIZING THE DATA...")
+  #converting datatype to list
+  unique_product_list = products.tolist()
 
-# adapted from code posted to matplotlib Slack channel: https://georgetown-opim-py.slack.com/archives/CFZDKNKA4/p1549494877005200
+  # filering approach adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
 
-bar_data = top_sellers
+  for product_name in unique_product_list:
+      matching_rows = df[df["product"] == product_name]
+      individual_monthly_sales = matching_rows["sales price"].sum()
+      top_sellers.append({"name": product_name, "monthly sales": individual_monthly_sales})
 
-product_list = []
-sales_list = []
+  top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly sales"), reverse=True)
 
-for p in bar_data:
-  product_list.append(p["name"])
-  sales_list.append(round(p["monthly sales"],2))
+  # print(top_sellers)
+  print("-----------------------")
+  print("MONTH: March 2018")
+  print("-----------------------")
+  print("CRUNCHING THE DATA...")
+  print("-----------------------")
+  print(f"TOTAL MONTHLY SALES:  {as_currency(total_monthly_sales)}")
+  print("Product".ljust(18) + "Sum of sales price".rjust(15))
+  print("-----------------------")
+  print("TOP SELLING PRODUCTS:")
 
-product_list.reverse()
-sales_list.reverse()
+  for p in top_sellers:
+      print(p["name"].ljust(18) + as_currency(p["monthly sales"]).rjust(15))
 
-#Formatting adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
-fig, ax = plt.subplots() # enables us to further customize the figure and/or the axes
-usd_formatter = ticker.FormatStrFormatter('$%1.0f')
-ax.xaxis.set_major_formatter(usd_formatter)
+  print("-----------------------")
+  print("VISUALIZING THE DATA...")
 
-#displaying x axis grid
-ax = plt.axes()        
-ax.xaxis.grid()
+  # adapted from code posted to matplotlib Slack channel: https://georgetown-opim-py.slack.com/archives/CFZDKNKA4/p1549494877005200
 
-#formating X axis ticker 
-#adapted from https://stackoverflow.com/questions/38152356/matplotlib-dollar-sign-with-thousands-comma-tick-labels
-fmt = '${x:,.0f}'
-tick = ticker.StrMethodFormatter(fmt)
-ax.xaxis.set_major_formatter(tick) 
+  bar_data = top_sellers
 
-#Make the chart
-plt.barh(product_list,sales_list, align = "center")
+  product_list = []
+  sales_list = []
 
-#displaying labels using a loop
-#adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
+  for p in bar_data:
+    product_list.append(p["name"])
+    sales_list.append(round(p["monthly sales"],2))
 
-for a,b in zip(sales_list,product_list):
-  plt.text(a, b, str(as_currency(a)))
+  product_list.reverse()
+  sales_list.reverse()
 
-plt.ylabel("Products")
-plt.xlabel("Sales")
-plt.title("Top Selling Products")
-plt.tight_layout()
-plt.show()
+  #Formatting adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
+  fig, ax = plt.subplots() # enables us to further customize the figure and/or the axes
+  usd_formatter = ticker.FormatStrFormatter('$%1.0f')
+  ax.xaxis.set_major_formatter(usd_formatter)
+
+  #displaying x axis grid
+  ax = plt.axes()        
+  ax.xaxis.grid()
+
+  #formating X axis ticker 
+  #adapted from https://stackoverflow.com/questions/38152356/matplotlib-dollar-sign-with-thousands-comma-tick-labels
+  fmt = '${x:,.0f}'
+  tick = ticker.StrMethodFormatter(fmt)
+  ax.xaxis.set_major_formatter(tick) 
+
+  #Make the chart
+  plt.barh(product_list,sales_list, align = "center")
+
+  #displaying labels using a loop
+  #adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
+
+  for a,b in zip(sales_list,product_list):
+    plt.text(a, b, str(as_currency(a)))
+
+  plt.ylabel("Products")
+  plt.xlabel("Sales")
+  plt.title("Top Selling Products")
+  plt.tight_layout()
+  plt.show()
