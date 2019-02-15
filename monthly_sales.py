@@ -10,8 +10,6 @@ import os
 
 # OPTION B: prompt the user to input their selection.
 
-
-
 while True:
   datatype_pass = True
   range_pass = True
