@@ -7,6 +7,7 @@ import datetime as dt
 import pandas as pd
 import operator
 import os
+import calendar
 
 #converting float to USD adapted from https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
 def as_currency(amount):
@@ -27,6 +28,7 @@ while True:
     print("INPUT DATA TYPE ERROR! Please only enter a specific year and month in a yyyymm format! Let's try again.")
     datatype_pass = False
   if datatype_pass == True:
+    #a reasonable time frame for the sales to take place between year 1900 and 2020
     if int(year_month) not in range(190001,202012):
         print("Please ensure the year and month are reasonable values. Let's try again.")
         range_pass = False
@@ -37,7 +39,9 @@ while True:
         #validation adapted from https://github.com/hiepnguyen034/data_dashboard/blob/master/exec_dash.py
         if not os.path.isfile(csv_filepath):
             program_pass = False
-            print("Sorry. The program cannot find a file at that location and will stop now.")
+            #fail gracefully by: 1) displaying a friendly error message 
+            # 2) avoiding runtime errors, and 3) preventing further execution.
+            print("Sorry. The program cannot find a file at that location and will terminate now.")
             break
         else:
             break
@@ -49,11 +53,10 @@ if program_pass == True:
   df = pd.read_csv(csv_filepath)
   total_monthly_sales = df['sales price'].sum()
 
-  mydate = dt.datetime.now()
-  month = int(str(year_month)[5:6])
-  #converting month number to name
-  month_name = mydate.strftime("%B")
-  year = month = int(str(year_month)[0:4])
+  month = int(str(year_month)[4:6])
+  #converting month number to name adapted from https://stackoverflow.com/questions/6557553/get-month-name-from-number
+  month_name = dt.date(1900, month, 1).strftime('%B')
+  year = month = int(str(year_month)[:4])
 
   #Getting unique product name
   products = df["product"].unique()
@@ -88,7 +91,6 @@ if program_pass == True:
   # adapted from code posted to matplotlib Slack channel: https://georgetown-opim-py.slack.com/archives/CFZDKNKA4/p1549494877005200
 
   bar_data = top_sellers
-
   product_list = []
   sales_list = []
 
@@ -96,10 +98,9 @@ if program_pass == True:
     product_list.append(p["name"])
     sales_list.append(round(p["monthly sales"],2))
 
+  #Formatting adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
   product_list.reverse()
   sales_list.reverse()
-
-  #Formatting adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
   fig, ax = plt.subplots() # enables us to further customize the figure and/or the axes
   usd_formatter = ticker.FormatStrFormatter('$%1.0f')
   ax.xaxis.set_major_formatter(usd_formatter)
