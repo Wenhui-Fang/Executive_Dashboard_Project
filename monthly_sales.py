@@ -1,5 +1,4 @@
 # monthly_sales.py
-
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.ticker as ticker
@@ -21,14 +20,14 @@ while True:
   datatype_pass = True
   range_pass = True
   program_pass = True
-  year_month = input("Please enter the year and month for the data you want to view in a yyyymm format (e.g. 201901)")
+  year_month = input("Please enter the year and month for the data you want to view in a yyyymm format (e.g.: 201803)")
 
   #Input validation
   if not year_month.isdigit():
     print("INPUT DATA TYPE ERROR! Please only enter a specific year and month in a yyyymm format! Let's try again.")
     datatype_pass = False
   if datatype_pass == True:
-    #a reasonable time frame for the sales to take place between year 1900 and 2020
+    #I set a reasonable time frame for the sales to take place (between year 1900 and 2020)
     if int(year_month) not in range(190001,202012):
         print("Please ensure the year and month are reasonable values. Let's try again.")
         range_pass = False
@@ -56,7 +55,7 @@ if program_pass == True:
   month = int(str(year_month)[4:6])
   #converting month number to name adapted from https://stackoverflow.com/questions/6557553/get-month-name-from-number
   month_name = dt.date(1900, month, 1).strftime('%B')
-  year = month = int(str(year_month)[:4])
+  year = int(str(year_month)[:4])
 
   #Getting unique product name
   products = df["product"].unique()
@@ -64,7 +63,6 @@ if program_pass == True:
   unique_product_list = products.tolist()
 
   # filering approach adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
-
   for product_name in unique_product_list:
       matching_rows = df[df["product"] == product_name]
       individual_monthly_sales = matching_rows["sales price"].sum()
@@ -101,9 +99,7 @@ if program_pass == True:
   #Formatting adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
   product_list.reverse()
   sales_list.reverse()
-  fig, ax = plt.subplots() # enables us to further customize the figure and/or the axes
-  usd_formatter = ticker.FormatStrFormatter('$%1.0f')
-  ax.xaxis.set_major_formatter(usd_formatter)
+  fig, ax = plt.subplots() 
 
   #displaying x axis grid
   ax = plt.axes()        
@@ -116,16 +112,15 @@ if program_pass == True:
   ax.xaxis.set_major_formatter(tick) 
 
   #Make the chart
-  plt.barh(product_list,sales_list, align = "center")
+  plt.barh(product_list,sales_list, align = "center", alpha=0.7)
 
   #displaying labels using a loop
   #adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
-
   for a,b in zip(sales_list,product_list):
     plt.text(a, b, str(as_currency(a)))
 
   plt.ylabel("Products")
   plt.xlabel("Sales (USD)")
-  plt.title("Top Selling Products")
+  plt.title("Top Selling Products " + "(" + month_name + str(year) + ")")
   plt.tight_layout()
   plt.show()
