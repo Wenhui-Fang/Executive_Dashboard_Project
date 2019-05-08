@@ -64,29 +64,12 @@ if __name__ == "__main__":
     df = pd.read_csv(csv_filepath)
     top_sellers = top_selling_products(df)
 
-    # top_sellers = []
-    
     total_monthly_sales = df['sales price'].sum()
 
     month = int(str(year_month)[4:6])
     #converting month number to name adapted from https://stackoverflow.com/questions/6557553/get-month-name-from-number
     month_name = dt.date(1900, month, 1).strftime('%B')
     year = int(str(year_month)[:4])
-
-    #Getting unique product name
-    products = df["product"].unique()
-    #converting datatype to list
-    unique_product_list = products.tolist()
-
-    # top_sellers = top_selling_products(csv_filepath)
-
-    # filering approach adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
-    # for product_name in unique_product_list:
-    #     matching_rows = df[df["product"] == product_name]
-    #     individual_monthly_sales = matching_rows["sales price"].sum()
-    #     top_sellers.append({"name": product_name, "monthly sales": individual_monthly_sales})
-
-    # top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly sales"), reverse=True)
 
     print("-----------------------")
     print("MONTH: " + month_name + " " + str(year))
@@ -97,9 +80,6 @@ if __name__ == "__main__":
     print("Product".ljust(18) + "Sum of sales price".rjust(15))
     print("-----------------------")
     print("TOP SELLING PRODUCTS:")
-
-
-    breakpoint()
 
     for p in top_sellers:
         print(p["name"].ljust(18) + to_usd(p["monthly_sales"]).rjust(15))
@@ -115,7 +95,7 @@ if __name__ == "__main__":
 
     for p in bar_data:
       product_list.append(p["name"])
-      sales_list.append(round(p["monthly sales"],2))
+      sales_list.append(round(p["monthly_sales"],2))
 
     #Formatting adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
     product_list.reverse()
