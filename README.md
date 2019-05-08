@@ -9,11 +9,30 @@ pip
 
 # installation
 
-Clone or download from GitHub source, then navigate into the project repository:
+
+Clone or download from GitHub source and navigate into the project repository:
 
 ``` py
-cd shopping-cart-project
+cd Executive_Dashboard_Project
 ```
+
+Use Anaconda to create and activate a new virtual environment.   
+
+
+``` py
+conda create -n executive_dashboard
+```
+
+``` py
+conda activate executive_dashboard
+```
+
+From inside the virtual environment, install package dependencies using command as below:
+
+``` py
+pip install -r requirements.txt
+```
+
 
 # Usage
 
