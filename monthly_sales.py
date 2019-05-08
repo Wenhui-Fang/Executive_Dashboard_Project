@@ -9,13 +9,23 @@ import os
 import calendar
 
 #converting float to USD adapted from https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
-def as_currency(amount):
+def to_usd(amount):
     if amount >= 0:
         return '${:,.2f}'.format(amount)
     else:
         return '-${:,.2f}'.format(-amount)
 
-
+#adapted from https://github.com/s2t2/exec-dash-starter-py/pull/1/files
+def top_selling_products(sales):
+    all_products = sales.groupby(["product"]).sum()
+    all_products = all_products.sort_values("sales price", ascending=False)
+    top_products = []
+    rank = 0
+    for i, row in all_products.iterrows():
+        d = {"rank": rank, "name": row.name, "monthly_sales": row["sales price"]}
+        top_sellers.append(d)
+        rank = rank + 1
+    return top_products
 
 if __name__ == "__main__":
   # OPTION B: prompt the user to input their selection.
@@ -78,13 +88,13 @@ if __name__ == "__main__":
     print("-----------------------")
     print("CRUNCHING THE DATA...")
     print("-----------------------")
-    print(f"TOTAL MONTHLY SALES:  {as_currency(total_monthly_sales)}")
+    print(f"TOTAL MONTHLY SALES:  {to_usd(total_monthly_sales)}")
     print("Product".ljust(18) + "Sum of sales price".rjust(15))
     print("-----------------------")
     print("TOP SELLING PRODUCTS:")
 
     for p in top_sellers:
-        print(p["name"].ljust(18) + as_currency(p["monthly sales"]).rjust(15))
+        print(p["name"].ljust(18) + to_usd(p["monthly sales"]).rjust(15))
 
     print("-----------------------")
     print("VISUALIZING THE DATA...")
@@ -120,7 +130,7 @@ if __name__ == "__main__":
     #displaying labels using a loop
     #adapted from https://www.reddit.com/r/learnpython/comments/2y9zwq/adding_value_labels_on_bars_in_a_matplotlib_bar/
     for a,b in zip(sales_list,product_list):
-      plt.text(a, b, str(as_currency(a)))
+      plt.text(a, b, str(to_usd(a)))
 
     plt.ylabel("Products")
     plt.xlabel("Sales (USD)")

@@ -1,0 +1,4 @@
+[
+  "test_monthly_sales.py::test_to_usd",
+  "test_monthly_sales.py::test_top_selling_products"
+]
