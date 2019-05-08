@@ -20,7 +20,7 @@ Use Anaconda to create and activate a new virtual environment.
 
 
 ``` py
-conda create -h executive_dashboard
+conda create -n executive_dashboard
 ```
 
 ``` py
