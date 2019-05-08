@@ -16,7 +16,18 @@ Clone or download from GitHub source and navigate into the project repository:
 cd Executive_Dashboard_Project
 ```
 
-Use Anaconda to create and activate a new virtual environment. From inside the virtual environment, install package dependencies using command as below:
+Use Anaconda to create and activate a new virtual environment.   
+
+
+``` py
+conda create -h executive_dashboard
+```
+
+``` py
+conda activate executive_dashboard
+```
+
+From inside the virtual environment, install package dependencies using command as below:
 
 ``` py
 pip install -r requirements.txt
