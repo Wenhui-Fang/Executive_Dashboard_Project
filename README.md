@@ -36,7 +36,7 @@ pip install -r requirements.txt
 
 # Usage
 
-Run the shopping cart script:
+Run the monthly sales script:
 
 ``` py
 monthly_sales.py
