@@ -1,4 +1,3 @@
-# monthly_sales.py
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.ticker as ticker
@@ -7,6 +6,8 @@ import pandas as pd
 import operator
 import os
 import calendar
+
+dash_line = "-----------------------"
 
 #converting float to USD adapted from https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
 def to_usd(amount):
@@ -65,26 +66,26 @@ if __name__ == "__main__":
     top_sellers = top_selling_products(df)
 
     total_monthly_sales = df['sales price'].sum()
-
     month = int(str(year_month)[4:6])
+
     #converting month number to name adapted from https://stackoverflow.com/questions/6557553/get-month-name-from-number
     month_name = dt.date(1900, month, 1).strftime('%B')
     year = int(str(year_month)[:4])
 
-    print("-----------------------")
+    print(dash_line)
     print("MONTH: " + month_name + " " + str(year))
-    print("-----------------------")
+    print(dash_line)
     print("CRUNCHING THE DATA...")
-    print("-----------------------")
+    print(dash_line)
     print(f"TOTAL MONTHLY SALES:  {to_usd(total_monthly_sales)}")
     print("Product".ljust(18) + "Sum of sales price".rjust(15))
-    print("-----------------------")
+    print(dash_line)
     print("TOP SELLING PRODUCTS:")
 
     for p in top_sellers:
         print(p["name"].ljust(18) + to_usd(p["monthly_sales"]).rjust(15))
 
-    print("-----------------------")
+    print(dash_line)
     print("VISUALIZING THE DATA...")
 
     # adapted from code posted to matplotlib Slack channel: https://georgetown-opim-py.slack.com/archives/CFZDKNKA4/p1549494877005200
