@@ -20,10 +20,10 @@ def top_selling_products(sales):
     all_products = sales.groupby(["product"]).sum()
     all_products = all_products.sort_values("sales price", ascending=False)
     top_products = []
-    rank = 0
+    rank = 1
     for i, row in all_products.iterrows():
-        d = {"rank": rank, "name": row.name, "monthly_sales": row["sales price"]}
-        top_sellers.append(d)
+        ranked_products_dict = {"rank": rank, "name": row.name, "monthly_sales": row["sales price"]}
+        top_products.append(ranked_products_dict)
         rank = rank + 1
     return top_products
 
@@ -60,9 +60,12 @@ if __name__ == "__main__":
 
   # create a bool variable to prevente further execution if validation fails
   if program_pass == True:
-    
-    top_sellers = []
+
     df = pd.read_csv(csv_filepath)
+    top_sellers = top_selling_products(df)
+
+    # top_sellers = []
+    
     total_monthly_sales = df['sales price'].sum()
 
     month = int(str(year_month)[4:6])
@@ -75,13 +78,15 @@ if __name__ == "__main__":
     #converting datatype to list
     unique_product_list = products.tolist()
 
-    # filering approach adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
-    for product_name in unique_product_list:
-        matching_rows = df[df["product"] == product_name]
-        individual_monthly_sales = matching_rows["sales price"].sum()
-        top_sellers.append({"name": product_name, "monthly sales": individual_monthly_sales})
+    # top_sellers = top_selling_products(csv_filepath)
 
-    top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly sales"), reverse=True)
+    # filering approach adapted from https://github.com/s2t2/exec-dash-starter-py/blob/master/monthly_sales_alt.py#L77
+    # for product_name in unique_product_list:
+    #     matching_rows = df[df["product"] == product_name]
+    #     individual_monthly_sales = matching_rows["sales price"].sum()
+    #     top_sellers.append({"name": product_name, "monthly sales": individual_monthly_sales})
+
+    # top_sellers = sorted(top_sellers, key=operator.itemgetter("monthly sales"), reverse=True)
 
     print("-----------------------")
     print("MONTH: " + month_name + " " + str(year))
@@ -93,8 +98,11 @@ if __name__ == "__main__":
     print("-----------------------")
     print("TOP SELLING PRODUCTS:")
 
+
+    breakpoint()
+
     for p in top_sellers:
-        print(p["name"].ljust(18) + to_usd(p["monthly sales"]).rjust(15))
+        print(p["name"].ljust(18) + to_usd(p["monthly_sales"]).rjust(15))
 
     print("-----------------------")
     print("VISUALIZING THE DATA...")
