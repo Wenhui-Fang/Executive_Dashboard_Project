@@ -9,17 +9,19 @@ pip
 
 # installation
 
-Use Anaconda to create and activate a new virtual environment. From inside the virtual environment, install package dependencies:
+
+Clone or download from GitHub source and navigate into the project repository:
+
+``` py
+cd Executive_Dashboard_Project
+```
+
+Use Anaconda to create and activate a new virtual environment. From inside the virtual environment, install package dependencies using command as below:
 
 ``` py
 pip install -r requirements.txt
 ```
 
-Then clone or download from GitHub source and navigate into the project repository:
-
-``` py
-cd Executive_Dashboard_Project
-```
 
 # Usage
 
