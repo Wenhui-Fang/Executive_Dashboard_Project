@@ -1,5 +1,4 @@
-from monthly_sales import to_usd
-from monthly_sales import top_selling_products
+from monthly_sales import to_usd,top_selling_products
 import os
 import pandas
 

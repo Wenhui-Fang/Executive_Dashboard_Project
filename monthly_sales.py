@@ -61,10 +61,9 @@ if __name__ == "__main__":
 
   # create a bool variable to prevente further execution if validation fails
   if program_pass == True:
-
+    #validation passed, start importing data
     df = pd.read_csv(csv_filepath)
     top_sellers = top_selling_products(df)
-
     total_monthly_sales = df['sales price'].sum()
     month = int(str(year_month)[4:6])
 
@@ -72,6 +71,7 @@ if __name__ == "__main__":
     month_name = dt.date(1900, month, 1).strftime('%B')
     year = int(str(year_month)[:4])
 
+    #output results
     print(dash_line)
     print("MONTH: " + month_name + " " + str(year))
     print(dash_line)
@@ -89,7 +89,6 @@ if __name__ == "__main__":
     print("VISUALIZING THE DATA...")
 
     # adapted from code posted to matplotlib Slack channel: https://georgetown-opim-py.slack.com/archives/CFZDKNKA4/p1549494877005200
-
     bar_data = top_sellers
     product_list = []
     sales_list = []
